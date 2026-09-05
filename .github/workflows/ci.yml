@@ -40,12 +40,20 @@ jobs:
         if: steps.filter.outputs.code == 'true'
         run: swiftlint
 
-      # If the runner's Xcode doesn't ship this simulator, update the name below.
+      - name: Resolve simulator destination
+        if: steps.filter.outputs.code == 'true'
+        id: destination
+        run: |
+          UDID=$(xcrun simctl list devices available --json \
+            | jq -r '.devices | to_entries | map(select(.key | test("iOS"))) | sort_by(.key) | last
+                     | .value | map(select(.name | test("iPhone"))) | .[0].udid')
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+
       - name: Build & test
         if: steps.filter.outputs.code == 'true'
         run: |
           xcodebuild \
             -project deckify.xcodeproj \
             -scheme "Deckify Dev Debug" \
-            -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" \
+            -destination "id=${{ steps.destination.outputs.udid }}" \
             clean test
