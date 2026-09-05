@@ -14,6 +14,5 @@
 
 ## Checklist
 
-- [ ] Branch and commits follow [GIT_CONVENTION.md](../GIT_CONVENTION.md)
-- [ ] PR title follows Conventional Commits (used as the squash commit message)
+- [ ] Branch and commits follow [GIT_CONVENTION.md](../GIT_CONVENTION.md) — merges are rebase-merge, so every commit lands on `main` as-is
 - [ ] No unrelated changes bundled into this PR
