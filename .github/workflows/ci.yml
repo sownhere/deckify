@@ -17,17 +17,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check for code changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            code:
+              - '**/*.swift'
+              - '**/*.xcconfig'
+              - 'deckify.xcodeproj/**'
+              - '.github/workflows/ci.yml'
+
       - name: Select latest Xcode
+        if: steps.filter.outputs.code == 'true'
         run: sudo xcode-select -s /Applications/Xcode.app
 
       - name: Install SwiftLint
+        if: steps.filter.outputs.code == 'true'
         run: brew install swiftlint
 
       - name: Lint
+        if: steps.filter.outputs.code == 'true'
         run: swiftlint
 
       # If the runner's Xcode doesn't ship this simulator, update the name below.
       - name: Build & test
+        if: steps.filter.outputs.code == 'true'
         run: |
           xcodebuild \
             -project deckify.xcodeproj \
