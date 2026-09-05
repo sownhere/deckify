@@ -5,14 +5,17 @@ Thanks for your interest in contributing! This is an early-stage open-source pro
 ## Getting started
 
 1. Fork & clone the repo.
-2. Open `deckify.xcodeproj` in Xcode 26+.
-3. Install SwiftLint & SwiftFormat (optional but recommended): `brew install swiftlint swiftformat`.
-4. Pick the scheme matching the environment you want to run — see [Environments & Schemes](README.md#environments--schemes).
+2. Install SwiftLint & SwiftFormat (optional but recommended): `brew install swiftlint swiftformat`.
+3. Install the shared git hooks: `git config core.hooksPath .githooks`.
+4. Open `deckify.xcodeproj` in Xcode 26+.
+5. Pick the scheme matching the environment you want to run — see [Environments & Schemes](README.md#environments--schemes).
 
 ## Branching & commits
 
-- Branch off `main`: `feature/<short-description>` or `fix/<short-description>`.
-- Write commit messages in the imperative mood (e.g. "Add UDP cursor stream", not "Added" or "Adding").
+See [GIT_CONVENTION.md](GIT_CONVENTION.md) for the full branch and commit convention. In short:
+
+- Branch off `main`: `<type>/<short-description>` (e.g. `feat/udp-cursor-stream`, `fix/drag-gesture-crash`).
+- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, imperative mood, lowercase, no trailing period.
 - Keep commits focused — one logical change per commit.
 
 ## Before opening a PR

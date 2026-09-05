@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! git diff --cached --check; then
+  echo "pre-commit: whitespace errors found in staged changes (see above)" >&2
+  exit 1
+fi
+
+exit 0

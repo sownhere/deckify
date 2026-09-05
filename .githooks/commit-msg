@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+commit_msg_file="$1"
+first_line=$(head -n1 "$commit_msg_file")
+
+pattern='^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\([a-z0-9.-]+\))?: [a-z0-9].*[^.]$'
+
+if [[ ${#first_line} -gt 72 ]]; then
+  echo "commit-msg: first line exceeds 72 characters:" >&2
+  echo "  $first_line" >&2
+  exit 1
+fi
+
+if ! [[ "$first_line" =~ $pattern ]]; then
+  echo "commit-msg: message does not follow Conventional Commits:" >&2
+  echo "  $first_line" >&2
+  echo "expected: <type>(<scope>): <subject>" >&2
+  echo "types: feat, fix, docs, style, refactor, perf, test, chore, ci, revert" >&2
+  exit 1
+fi
+
+exit 0

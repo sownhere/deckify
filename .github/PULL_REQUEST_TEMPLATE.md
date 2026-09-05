@@ -14,5 +14,6 @@
 
 ## Checklist
 
-- [ ] Branch follows `feature/<short-description>` or `fix/<short-description>` naming
+- [ ] Branch and commits follow [GIT_CONVENTION.md](../GIT_CONVENTION.md)
+- [ ] PR title follows Conventional Commits (used as the squash commit message)
 - [ ] No unrelated changes bundled into this PR
