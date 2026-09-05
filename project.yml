@@ -1,0 +1,194 @@
+name: deckify
+options:
+  bundleIdPrefix: com.sownhere
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  defaultSourceDirectoryType: syncedFolder
+
+configs:
+  Dev Debug: debug
+  Dev Release: release
+  Staging Debug: debug
+  Staging Release: release
+  Production Debug: debug
+  Production Release: release
+
+configFiles:
+  Dev Debug: envs/dev.xcconfig
+  Dev Release: envs/dev.xcconfig
+  Staging Debug: envs/staging.xcconfig
+  Staging Release: envs/staging.xcconfig
+  Production Debug: envs/production.xcconfig
+  Production Release: envs/production.xcconfig
+
+packages:
+  swift-dependencies:
+    url: https://github.com/pointfreeco/swift-dependencies
+    from: 1.6.0
+  swift-navigation:
+    url: https://github.com/pointfreeco/swift-navigation
+    from: 2.2.0
+  swift-clocks:
+    url: https://github.com/pointfreeco/swift-clocks
+    from: 1.1.0
+
+targets:
+  Deckify:
+    type: application
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Deckify
+      - path: Deckify/Sources
+      - path: Deckify/Resources
+      - path: Shared
+    dependencies:
+      - package: swift-dependencies
+        product: Dependencies
+      - package: swift-navigation
+        product: SwiftUINavigation
+    settings:
+      base:
+        PRODUCT_NAME: Deckify
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID)
+        MARKETING_VERSION: $(APP_VERSION)
+        CURRENT_PROJECT_VERSION: $(APP_BUILD_NUMBER)
+        INFOPLIST_FILE: Deckify/Resources/Plist/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Deckify/Resources/Deckify.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_VERSION: "6.0"
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: ""
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+    preBuildScripts:
+      - name: SwiftFormat
+        script: |
+          if which swiftformat >/dev/null; then
+            swiftformat .
+          else
+            echo "warning: SwiftFormat not installed"
+          fi
+        basedOnDependencyAnalysis: false
+      - name: SwiftLint
+        script: |
+          if which swiftlint >/dev/null; then
+            swiftlint
+          else
+            echo "warning: SwiftLint not installed"
+          fi
+        basedOnDependencyAnalysis: false
+
+  DeckifyTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: DeckifyTests
+    dependencies:
+      - target: Deckify
+      - package: swift-dependencies
+        product: Dependencies
+      - package: swift-clocks
+        product: Clocks
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
+
+schemes:
+  Deckify Dev Debug:
+    build:
+      targets:
+        Deckify: all
+        DeckifyTests: [test]
+    run:
+      config: Dev Debug
+    test:
+      config: Dev Debug
+      targets:
+        - DeckifyTests
+    profile:
+      config: Dev Release
+    analyze:
+      config: Dev Debug
+    archive:
+      config: Dev Release
+
+  Deckify Dev Release:
+    build:
+      targets:
+        Deckify: all
+    run:
+      config: Dev Release
+    profile:
+      config: Dev Release
+    analyze:
+      config: Dev Release
+    archive:
+      config: Dev Release
+
+  Deckify Staging Debug:
+    build:
+      targets:
+        Deckify: all
+        DeckifyTests: [test]
+    run:
+      config: Staging Debug
+    test:
+      config: Staging Debug
+      targets:
+        - DeckifyTests
+    profile:
+      config: Staging Release
+    analyze:
+      config: Staging Debug
+    archive:
+      config: Staging Release
+
+  Deckify Staging Release:
+    build:
+      targets:
+        Deckify: all
+    run:
+      config: Staging Release
+    profile:
+      config: Staging Release
+    analyze:
+      config: Staging Release
+    archive:
+      config: Staging Release
+
+  Deckify Production Debug:
+    build:
+      targets:
+        Deckify: all
+        DeckifyTests: [test]
+    run:
+      config: Production Debug
+    test:
+      config: Production Debug
+      targets:
+        - DeckifyTests
+    profile:
+      config: Production Release
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+
+  Deckify Production Release:
+    build:
+      targets:
+        Deckify: all
+    run:
+      config: Production Release
+    profile:
+      config: Production Release
+    analyze:
+      config: Production Release
+    archive:
+      config: Production Release
