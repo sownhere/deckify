@@ -56,4 +56,6 @@ jobs:
             -project deckify.xcodeproj \
             -scheme "Deckify Dev Debug" \
             -destination "id=${{ steps.destination.outputs.udid }}" \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
             clean test
