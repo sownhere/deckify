@@ -126,11 +126,7 @@ The project follows Clean Architecture to separate the network layer (UDP/TCP), 
 
 ## Contributing
 
-This is an open-source project — contributions are welcome.
-
-- Branch off `main`, naming branches `feature/<short-description>` or `fix/<short-description>`.
-- Make sure `swiftlint` is clean and `xcodebuild test` passes before opening a PR.
-- Project configuration changes (target, scheme, dependency) are made directly in Xcode / `deckify.xcodeproj`.
+This is an open-source project — contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for branch naming, commit conventions, and the PR checklist.
 
 ## License
 
